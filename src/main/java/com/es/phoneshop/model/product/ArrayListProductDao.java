@@ -37,7 +37,7 @@ public class ArrayListProductDao implements ProductDao {
                     .findAny();
             if (optionalProduct.isPresent()) {
                 Product updatedProduct = optionalProduct.get();
-                updateProduct(product, updatedProduct);
+                updateProduct(updatedProduct, product);
             } else {
                 throw new NoSuchElementException("Unable to find product with given id");
             }
