@@ -1,10 +1,7 @@
 package com.es.phoneshop.model.product;
 
 import java.math.BigDecimal;
-import java.util.ArrayList;
-import java.util.Currency;
-import java.util.List;
-import java.util.NoSuchElementException;
+import java.util.*;
 import java.util.stream.Collectors;
 
 public class ArrayListProductDao implements ProductDao {
@@ -17,11 +14,11 @@ public class ArrayListProductDao implements ProductDao {
     }
 
     @Override
-    public synchronized Product getProduct(Long id) throws NoSuchElementException {
+    public synchronized Product getProduct(Long id) {
         return products.stream()
                 .filter(product -> id.equals(product.getId()))
                 .findAny()
-                .get();
+                .orElseThrow(NoSuchElementException::new);
     }
 
     @Override
@@ -35,9 +32,17 @@ public class ArrayListProductDao implements ProductDao {
     @Override
     public synchronized void save(Product product) {
         if (product.getId() != null) {
-            products.stream().map(o -> o.getId().equals(product.getId()) ? product : o);
+            Optional<Product> optionalProduct = products.stream()
+                    .filter(o -> o.getId().equals(product.getId()))
+                    .findAny();
+            if (optionalProduct.isPresent()) {
+                Product updatedProduct = optionalProduct.get();
+                updateProduct(product, updatedProduct);
+            } else {
+                throw new NoSuchElementException("Unable to find product with given id");
+            }
         }
-        else  {
+        else {
             product.setId(maxId++);
             products.add(product);
         }
@@ -46,6 +51,15 @@ public class ArrayListProductDao implements ProductDao {
     @Override
     public synchronized void delete(Long id) {
         products.removeIf(product -> id.equals(product.getId()));
+    }
+
+    private void updateProduct(Product oldProduct, Product newProduct) {
+        newProduct.setCode(oldProduct.getCode());
+        newProduct.setDescription(oldProduct.getDescription());
+        newProduct.setPrice(oldProduct.getPrice());
+        newProduct.setCurrency(oldProduct.getCurrency());
+        newProduct.setStock(oldProduct.getStock());
+        newProduct.setImageUrl(oldProduct.getImageUrl());
     }
 
     private void saveSampleProducts(){
