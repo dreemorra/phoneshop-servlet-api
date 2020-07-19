@@ -1,5 +1,6 @@
 package com.es.phoneshop.model.product;
 
+import com.es.phoneshop.web.DemoDataServletContextListener;
 import org.junit.Before;
 import org.junit.Test;
 
@@ -14,13 +15,14 @@ public class ArrayListProductDaoTest
 
     @Before
     public void setup() {
-        productDao = new ArrayListProductDao();
+        productDao = ArrayListProductDao.getInstance();
+        ProductDemoData.saveSampleProducts();
     }
 
-//    @Test
-//    public void testFindProductsNoResults() {
-//        assertFalse(productDao.findProducts().isEmpty());
-//    }
+    @Test
+    public void testFindProductsNoResults() {
+        assertFalse(productDao.findProducts("", null, null).isEmpty());
+    }
 
     @Test
     public void testSearch() {
