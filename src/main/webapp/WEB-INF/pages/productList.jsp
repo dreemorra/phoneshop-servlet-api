@@ -39,9 +39,31 @@
             </a>
         </td>
         <td class="price">
-          <fmt:formatNumber value="${product.price}" type="currency" currencySymbol="${product.currency.symbol}"/>
+          <div class="popup">
+            <fmt:formatNumber value="${product.price}" type="currency" currencySymbol="${product.currency.symbol}"/>
+            <span class="popuptext">
+              <h3>Price history</h3>
+              <p>${product.description}<p>
+                <table>
+                    <thead>
+                        <tr>
+                            <td>Start date</td>
+                            <td>Price</td>
+                        </tr>
+                    </thead>
+                    <c:forEach var="price" items="${product.priceList}">
+                        <tr>
+                            <td><fmt:formatDate value="${price.date}" pattern="dd MMM yyyy"/></td>
+                            <td><fmt:formatNumber value="${price.price}" type="currency"
+                                currencySymbol="${price.currency.symbol}"/></td>
+                        </tr>
+                    </c:forEach>
+                </table>
+            </span>
+          </div>
         </td>
       </tr>
     </c:forEach>
   </table>
+  <script src="${pageContext.servletContext.contextPath}/scripts/popupScript.js"></script>
 </tags:master>

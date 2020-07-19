@@ -1,6 +1,5 @@
 package com.es.phoneshop.model.product;
 
-import java.math.BigDecimal;
 import java.util.*;
 import java.util.stream.Collectors;
 
@@ -103,8 +102,7 @@ public class ArrayListProductDao implements ProductDao {
     private void updateProduct(Product oldProduct, Product newProduct) {
         newProduct.setCode(oldProduct.getCode());
         newProduct.setDescription(oldProduct.getDescription());
-        newProduct.setPrice(oldProduct.getPrice());
-        newProduct.setCurrency(oldProduct.getCurrency());
+        newProduct.setPriceList(oldProduct.getPriceList());
         newProduct.setStock(oldProduct.getStock());
         newProduct.setImageUrl(oldProduct.getImageUrl());
     }
