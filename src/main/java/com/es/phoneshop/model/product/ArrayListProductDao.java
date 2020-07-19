@@ -22,10 +22,29 @@ public class ArrayListProductDao implements ProductDao {
     }
 
     @Override
-    public synchronized List<Product> findProducts() {
-        return products.stream()
+    public synchronized List<Product> findProducts(String query, SortField sortField, SortOrder sortOrder) {
+        List<Product> foundProducts = products;
+
+        // search
+        if (query != null && !query.isEmpty()) {
+            foundProducts = search(query);
+        }
+
+        Comparator<Product> comparator = Comparator.comparing(product -> {
+            if (SortField.description == sortField) {
+                return (Comparable) product.getDescription();
+            } else {
+                return (Comparable) product.getPrice();
+            }
+        });
+        if (sortOrder == SortOrder.desc) {
+            comparator = comparator.reversed();
+        }
+
+        return foundProducts.stream()
                 .filter(product -> product.getPrice() != null)
                 .filter(product -> product.getStock() > 0)
+                .sorted(comparator)
                 .collect(Collectors.toList());
     }
 
@@ -33,11 +52,6 @@ public class ArrayListProductDao implements ProductDao {
     public List<Product> search(String query) {
         String[] split = query.toLowerCase().split(" ");
 
-        List<Product> result = products.stream()
-                .filter(p -> Arrays.stream(split).anyMatch(s -> p.getDescription().toLowerCase().contains(s)))
-                .collect(Collectors.toList());
-
-        //TODO: make it more compact?
         Comparator<Product> relevanceComparator = (first, second) -> {
             int firstCounter = 0, secondCounter = 0;
             for (String q : split) {
@@ -48,9 +62,12 @@ public class ArrayListProductDao implements ProductDao {
             }
             return secondCounter - firstCounter;
         };
-        result.sort(relevanceComparator);
 
-        return result;
+        List<Product> foundProducts = products.stream()
+                .filter(p -> Arrays.stream(split).anyMatch(s -> p.getDescription().toLowerCase().contains(s)))
+                .collect(Collectors.toList());
+        foundProducts.sort(relevanceComparator);
+        return foundProducts;
     }
 
     @Override
