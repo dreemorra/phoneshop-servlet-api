@@ -30,6 +30,30 @@ public class ArrayListProductDao implements ProductDao {
     }
 
     @Override
+    public List<Product> search(String query) {
+        String[] split = query.toLowerCase().split(" ");
+
+        List<Product> result = products.stream()
+                .filter(p -> Arrays.stream(split).anyMatch(s -> p.getDescription().toLowerCase().contains(s)))
+                .collect(Collectors.toList());
+
+        //TODO: make it more compact?
+        Comparator<Product> relevanceComparator = (first, second) -> {
+            int firstCounter = 0, secondCounter = 0;
+            for (String q : split) {
+                if (first.getDescription().toLowerCase().contains(q))
+                    firstCounter++;
+                if (second.getDescription().toLowerCase().contains(q))
+                    secondCounter++;
+            }
+            return secondCounter - firstCounter;
+        };
+        result.sort(relevanceComparator);
+
+        return result;
+    }
+
+    @Override
     public synchronized void save(Product product) {
         if (product.getId() != null) {
             Optional<Product> optionalProduct = products.stream()

@@ -4,8 +4,7 @@ import org.junit.Before;
 import org.junit.Test;
 
 import java.math.BigDecimal;
-import java.util.Currency;
-import java.util.NoSuchElementException;
+import java.util.*;
 
 import static org.junit.Assert.*;
 
@@ -21,6 +20,22 @@ public class ArrayListProductDaoTest
     @Test
     public void testFindProductsNoResults() {
         assertFalse(productDao.findProducts().isEmpty());
+    }
+
+    @Test
+    public void testSearch() {
+        List<Product> resultList = productDao.search("Samsung II");
+        List<String> expectedList = new ArrayList<String>();
+        expectedList.add("Samsung Galaxy S II");
+        expectedList.add("Samsung Galaxy S III");
+        expectedList.add("Samsung Galaxy S");
+
+        for (Product product : resultList) {
+            boolean result = expectedList.stream()
+                    .anyMatch(description -> product.getDescription().equals(description));
+            assertTrue(result);
+        assertFalse(resultList.isEmpty());
+        }
     }
 
     @Test
