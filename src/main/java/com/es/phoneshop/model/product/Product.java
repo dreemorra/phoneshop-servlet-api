@@ -9,6 +9,7 @@ public class Product {
     private Long id;
     private String code;
     private String description;
+    private PriceHistory recentPrice;
     private List<PriceHistory> priceList;
     private int stock;
     private String imageUrl;
@@ -18,32 +19,22 @@ public class Product {
     }
 
     public Product(Long id, String code, String description, BigDecimal price, Currency currency, int stock, String imageUrl) {
+        this(code, description, price, currency, stock, imageUrl);
         this.id = id;
-        this.code = code;
-        this.description = description;
-        this.priceList = null;
-        this.stock = stock;
-        this.imageUrl = imageUrl;
-        this.newPrice(new PriceHistory(price, currency));
     }
 
-    public Product(Long id, String code, String description, List<PriceHistory> priceList, int stock, String imageUrl) {
+    public Product(Long id, String code, String description, PriceHistory price, int stock, String imageUrl) {
+        this(code, description, price, stock, imageUrl);
         this.id = id;
-        this.code = code;
-        this.description = description;
-        this.priceList = priceList;
-        this.stock = stock;
-        this.imageUrl = imageUrl;
     }
 
-    public Product(String code, String description, List<PriceHistory> priceList, int stock, String imageUrl) {
+    public Product(String code, String description, PriceHistory price, int stock, String imageUrl) {
         this.code = code;
         this.description = description;
-        this.priceList = priceList;
+        this.priceList = new ArrayList<>();
         this.stock = stock;
         this.imageUrl = imageUrl;
-        if (this.priceList == null)
-            this.priceList = new ArrayList<>();
+        this.newPrice(price);
     }
 
     public Product(String code, String description, BigDecimal price, Currency currency, int stock, String imageUrl) {
@@ -89,18 +80,15 @@ public class Product {
 
     public void newPrice(PriceHistory price) {
         priceList.add(price);
+        recentPrice = price;
     }
 
     public BigDecimal getPrice() {
-        return priceList.size() > 0
-                ? priceList.get(priceList.size() - 1).getPrice()
-                : new BigDecimal(0);
+        return recentPrice.getPrice();
     }
 
     public Currency getCurrency() {
-        return priceList.size() > 0
-                ? priceList.get(priceList.size() - 1).getCurrency()
-                : Currency.getInstance("USD");
+        return recentPrice.getCurrency();
     }
 
     public int getStock() {

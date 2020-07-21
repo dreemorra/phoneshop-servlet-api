@@ -1,4 +1,10 @@
-package com.es.phoneshop.model.product;
+package com.es.phoneshop.dao.impl;
+
+import com.es.phoneshop.dao.ProductDao;
+import com.es.phoneshop.model.product.Product;
+import com.es.phoneshop.enums.SortField;
+import com.es.phoneshop.enums.SortOrder;
+import com.es.phoneshop.model.product.ProductNotFoundException;
 
 import java.util.*;
 import java.util.stream.Collectors;
@@ -24,7 +30,7 @@ public class ArrayListProductDao implements ProductDao {
         return products.stream()
                 .filter(product -> id.equals(product.getId()))
                 .findAny()
-                .orElseThrow(NoSuchElementException::new);
+                .orElseThrow(() -> new ProductNotFoundException(id));
     }
 
     @Override
@@ -36,13 +42,13 @@ public class ArrayListProductDao implements ProductDao {
         }
 
         Comparator<Product> comparator = Comparator.comparing(product -> {
-            if (SortField.description == sortField) {
+            if (SortField.DESCRIPTION == sortField) {
                 return (Comparable) product.getDescription();
             } else {
                 return (Comparable) product.getPrice();
             }
         });
-        if (sortOrder == SortOrder.desc) {
+        if (sortOrder == SortOrder.DESC) {
             comparator = comparator.reversed();
         }
 

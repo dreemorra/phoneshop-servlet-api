@@ -1,5 +1,9 @@
 package com.es.phoneshop.web;
 
+import com.es.phoneshop.dao.impl.ArrayListProductDao;
+import com.es.phoneshop.dao.ProductDao;
+import com.es.phoneshop.enums.SortField;
+import com.es.phoneshop.enums.SortOrder;
 import com.es.phoneshop.model.product.*;
 
 import javax.servlet.ServletConfig;
@@ -23,7 +27,7 @@ public class ProductListPageServlet extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         String query = request.getParameter("query");
-        String field = request.getParameter("field");
+        String field = request.getParameter("sort");
         String order = request.getParameter("order");
         request.setAttribute("sort", field);
         request.setAttribute("order", order);

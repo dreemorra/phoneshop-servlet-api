@@ -1,6 +1,7 @@
 package com.es.phoneshop.model.product;
 
-import com.es.phoneshop.web.DemoDataServletContextListener;
+import com.es.phoneshop.dao.impl.ArrayListProductDao;
+import com.es.phoneshop.dao.ProductDao;
 import org.junit.Before;
 import org.junit.Test;
 
