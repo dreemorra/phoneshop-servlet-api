@@ -8,7 +8,7 @@
   <link rel="stylesheet" href="${pageContext.servletContext.contextPath}/styles/main.css">
   <link href='${pageContext.servletContext.contextPath}/styles/popup.css' rel='stylesheet' type='text/css'>
 </head>
-<body class="product-list">
+<body>
   <header>
     <a href="${pageContext.servletContext.contextPath}">
       <img src="${pageContext.servletContext.contextPath}/images/logo.svg"/>
@@ -16,7 +16,16 @@
     </a>
   </header>
   <main>
-    <jsp:doBody/>
+      <div class="main-container">
+        <jsp:doBody/>
+      </div>
   </main>
+  <footer class="footer">
+      <nav> </nav>
+      <div id="footer-div">
+          <a href="mailto:s.satturn@gmail.com">Bug report</a>
+          <p>(c) Expert Soft, 2020</p>
+      </div>
+  </footer>
 </body>
 </html>

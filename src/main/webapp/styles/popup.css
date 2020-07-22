@@ -13,8 +13,8 @@
 /* The actual popup */
 .popup .popuptext {
     visibility: hidden;
-    width: 160px;
-    background-color: #eee;
+    width: 200px;
+    background-color: white;
     color: black;
     text-align: center;
     border-radius: 6px;
@@ -27,6 +27,19 @@
 
 .popuptext td {
     color: black;
+    border: none;
+}
+
+.popup table {
+    background-color: white;
+}
+
+.popup tr:nth-child(even) {
+    background-color: #e5ffff;
+}
+
+.popup thead {
+    background-color: #b2ebf2;
 }
 
 /* Toggle this class - hide and show the popup */
