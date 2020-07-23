@@ -1,0 +1,50 @@
+
+/* Popup container - can be anything you want */
+.popup {
+    position: relative;
+    display: inline-block;
+    cursor: pointer;
+    -webkit-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+    user-select: none;
+}
+
+/* The actual popup */
+.popup .popuptext {
+    visibility: hidden;
+    width: 200px;
+    background-color: white;
+    color: black;
+    text-align: center;
+    border-radius: 6px;
+    padding: 8px 0;
+    position: absolute;
+    z-index: 1;
+    left: 160px;
+    margin-left: -80px;
+}
+
+.popuptext td {
+    color: black;
+    border: none;
+}
+
+.popup table {
+    background-color: white;
+}
+
+.popup tr:nth-child(even) {
+    background-color: #e5ffff;
+}
+
+.popup thead {
+    background-color: #b2ebf2;
+}
+
+/* Toggle this class - hide and show the popup */
+.popup .show {
+    visibility: visible;
+    -webkit-animation: fadeIn 1s;
+    animation: fadeIn 1s;
+}

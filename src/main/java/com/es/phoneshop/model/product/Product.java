@@ -1,39 +1,49 @@
 package com.es.phoneshop.model.product;
 
 import java.math.BigDecimal;
+import java.util.ArrayList;
 import java.util.Currency;
+import java.util.List;
 
 public class Product {
     private Long id;
     private String code;
     private String description;
-    /** null means there is no price because the product is outdated or new */
-    private BigDecimal price;
-    /** can be null if the price is null */
-    private Currency currency;
+    private PriceHistory recentPrice;
+    private List<PriceHistory> priceList;
     private int stock;
     private String imageUrl;
 
     public Product() {
+        priceList = new ArrayList<>();
     }
 
     public Product(Long id, String code, String description, BigDecimal price, Currency currency, int stock, String imageUrl) {
+        this(code, description, price, currency, stock, imageUrl);
         this.id = id;
+    }
+
+    public Product(Long id, String code, String description, PriceHistory price, int stock, String imageUrl) {
+        this(code, description, price, stock, imageUrl);
+        this.id = id;
+    }
+
+    public Product(String code, String description, PriceHistory price, int stock, String imageUrl) {
         this.code = code;
         this.description = description;
-        this.price = price;
-        this.currency = currency;
+        this.priceList = new ArrayList<>();
         this.stock = stock;
         this.imageUrl = imageUrl;
+        this.newPrice(price);
     }
 
     public Product(String code, String description, BigDecimal price, Currency currency, int stock, String imageUrl) {
         this.code = code;
         this.description = description;
-        this.price = price;
-        this.currency = currency;
+        this.priceList = new ArrayList<>();
         this.stock = stock;
         this.imageUrl = imageUrl;
+        this.newPrice(new PriceHistory(price, currency));
     }
 
     public Long getId() {
@@ -60,20 +70,25 @@ public class Product {
         this.description = description;
     }
 
-    public BigDecimal getPrice() {
-        return price;
+    public List<PriceHistory> getPriceList() {
+        return priceList;
     }
 
-    public void setPrice(BigDecimal price) {
-        this.price = price;
+    public void setPriceList(List<PriceHistory> prices) {
+        this.priceList = prices;
+    }
+
+    public void newPrice(PriceHistory price) {
+        priceList.add(price);
+        recentPrice = price;
+    }
+
+    public BigDecimal getPrice() {
+        return recentPrice.getPrice();
     }
 
     public Currency getCurrency() {
-        return currency;
-    }
-
-    public void setCurrency(Currency currency) {
-        this.currency = currency;
+        return recentPrice.getCurrency();
     }
 
     public int getStock() {
