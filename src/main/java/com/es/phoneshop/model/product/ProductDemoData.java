@@ -13,7 +13,7 @@ public class ProductDemoData {
     public static void saveSampleProducts() {
         ProductDao productDao = ArrayListProductDao.getInstance();
         Currency usd = Currency.getInstance("USD");
-        //TODO: fix imageUrl
+
         productDao.save(new Product("sgs", "Samsung Galaxy S", new PriceHistory(new BigDecimal(200), usd, new Date(100 + 19, 12, 27)), 100, "manufacturer/Samsung/Samsung%20Galaxy%20S.jpg"));
         productDao.save(new Product("sgs2", "Samsung Galaxy S II", new BigDecimal(200), usd, 0, "manufacturer/Samsung/Samsung%20Galaxy%20S%20II.jpg"));
         productDao.save(new Product("sgs3", "Samsung Galaxy S III", new PriceHistory(new BigDecimal(666), usd, new Date(100 + 13, 6, 6)), 5, "manufacturer/Samsung/Samsung%20Galaxy%20S%20III.jpg"));
