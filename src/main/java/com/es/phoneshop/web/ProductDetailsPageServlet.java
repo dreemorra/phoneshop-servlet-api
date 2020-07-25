@@ -18,6 +18,7 @@ public class ProductDetailsPageServlet  extends HttpServlet {
         super.init(config);
         productDao = ArrayListProductDao.getInstance();
     }
+
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         String productId = request.getPathInfo();
