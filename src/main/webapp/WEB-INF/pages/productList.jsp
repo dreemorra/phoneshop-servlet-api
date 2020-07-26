@@ -63,6 +63,7 @@
           </tr>
         </c:forEach>
       </table>
+      <jsp:include page="recentlyViewed.jsp" />
   </div>
   <script src="${pageContext.servletContext.contextPath}/scripts/popupScript.js"></script>
 </tags:master>

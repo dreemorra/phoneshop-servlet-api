@@ -4,8 +4,11 @@ import com.es.phoneshop.dao.impl.ArrayListProductDao;
 import com.es.phoneshop.dao.ProductDao;
 import com.es.phoneshop.exceptions.OutOfStockException;
 import com.es.phoneshop.model.cart.Cart;
-import com.es.phoneshop.model.cart.CartService;
-import com.es.phoneshop.model.cart.impl.DefaultCartService;
+import com.es.phoneshop.model.product.Product;
+import com.es.phoneshop.services.CartService;
+import com.es.phoneshop.services.RecentlyViewedProductsService;
+import com.es.phoneshop.services.impl.DefaultCartService;
+import com.es.phoneshop.services.impl.DefaultRecentlyViewedProductsService;
 
 import javax.servlet.ServletConfig;
 import javax.servlet.ServletException;
@@ -19,18 +22,23 @@ import java.text.ParseException;
 public class ProductDetailsPageServlet  extends HttpServlet {
     private ProductDao productDao;
     private CartService cartService;
+    private RecentlyViewedProductsService recentlyViewedService;
 
     @Override
     public void init(ServletConfig config) throws ServletException {
         super.init(config);
         productDao = ArrayListProductDao.getInstance();
         cartService = DefaultCartService.getInstance();
+        recentlyViewedService = DefaultRecentlyViewedProductsService.getInstance();
     }
 
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-        request.setAttribute("product", productDao.getProduct(parseProductId(request)));
+        Product product = productDao.getProduct(parseProductId(request));
+        recentlyViewedService.addProduct(request, product);
+        request.setAttribute("product", product);
         request.setAttribute("cart", cartService.getCart(request));
+        request.setAttribute("recentlyViewedProducts", recentlyViewedService.getList(request));
         request.getRequestDispatcher("/WEB-INF/pages/product.jsp").forward(request, response);
     }
 
@@ -50,7 +58,7 @@ public class ProductDetailsPageServlet  extends HttpServlet {
         try {
             cartService.add(cart, productId, quantity);
         } catch (OutOfStockException e) {
-            request.setAttribute("error", "Out of stock, available" + e.getStockAvailable());
+            request.setAttribute("error", "Out of stock, available " + e.getStockAvailable());
             doGet(request, response);
             return;
         }
