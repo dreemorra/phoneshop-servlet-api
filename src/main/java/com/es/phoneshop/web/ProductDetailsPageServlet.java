@@ -3,6 +3,7 @@ package com.es.phoneshop.web;
 import com.es.phoneshop.dao.impl.ArrayListProductDao;
 import com.es.phoneshop.dao.ProductDao;
 import com.es.phoneshop.exceptions.OutOfStockException;
+import com.es.phoneshop.model.cart.Cart;
 import com.es.phoneshop.model.cart.CartService;
 import com.es.phoneshop.model.cart.impl.DefaultCartService;
 
@@ -29,7 +30,7 @@ public class ProductDetailsPageServlet  extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         request.setAttribute("product", productDao.getProduct(parseProductId(request)));
-        request.setAttribute("cart", cartService.getCart());
+        request.setAttribute("cart", cartService.getCart(request));
         request.getRequestDispatcher("/WEB-INF/pages/product.jsp").forward(request, response);
     }
 
@@ -45,8 +46,9 @@ public class ProductDetailsPageServlet  extends HttpServlet {
             e.printStackTrace();
         }
 
+        Cart cart = cartService.getCart(request);
         try {
-            cartService.add(productId, quantity);
+            cartService.add(cart, productId, quantity);
         } catch (OutOfStockException e) {
             request.setAttribute("error", "Out of stock, available" + e.getStockAvailable());
             doGet(request, response);
