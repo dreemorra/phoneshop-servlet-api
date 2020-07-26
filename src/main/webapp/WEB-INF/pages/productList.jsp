@@ -7,7 +7,7 @@
 <tags:master pageTitle="Product List">
   <form class="search-form">
     <input id="search-input" name="query" type="text" value="${param.query}" placeholder="Search">
-    <input id="search-button" type="submit" value="Search">
+    <input id="search-button" class="default-button" type="submit" value="Search">
   </form>
   <div class="product-list">
       <table>

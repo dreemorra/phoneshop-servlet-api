@@ -2,6 +2,7 @@ package com.es.phoneshop.model.cart.impl;
 
 import com.es.phoneshop.dao.ProductDao;
 import com.es.phoneshop.dao.impl.ArrayListProductDao;
+import com.es.phoneshop.exceptions.OutOfStockException;
 import com.es.phoneshop.model.cart.Cart;
 import com.es.phoneshop.model.cart.CartItem;
 import com.es.phoneshop.model.cart.CartService;
@@ -32,8 +33,20 @@ public class DefaultCartService implements CartService {
     }
 
     @Override
-    public void add(Long productId, int quantity) {
+    public void add(Long productId, int quantity) throws OutOfStockException {
         Product product = productDao.getProduct(productId);
-        cart.getItems().add(new CartItem(product, quantity));
+        CartItem productInStock = cart.getItem(productId);
+
+        if(product.getStock() < quantity) {
+            throw new OutOfStockException(product, quantity, product.getStock());
+        }
+
+        //sums quantity if item is already in cart; otherwise adds item to cart
+        if (productInStock != null) {
+            productInStock.setQuantity(productInStock.getQuantity() + quantity);
+        } else {
+            cart.getItems().add(new CartItem(product, quantity));
+        }
+        product.setStock(product.getStock() - quantity);
     }
 }

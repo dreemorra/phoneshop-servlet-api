@@ -106,7 +106,7 @@ img.product-tile {
     border-color: var(--primary-dark-color);
 }
 
-#search-button {
+.default-button {
     padding: 5px 5px;
     margin: 5px 5px;
     border: thin solid white;
@@ -118,7 +118,7 @@ img.product-tile {
     font-color: white;
 }
 
-#search-button:hover {
+.default-button:hover {
     background-color: var(--primary-dark-color);
 }
 
@@ -148,6 +148,16 @@ img.product-tile {
 .product-description table {
     margin: 10px 10px 10px 0px;
     background-color: var(--secondary-light-color);
+}
+
+.error-message {
+    color: red;
+    padding: 15px;
+}
+
+.success-message {
+    color: green;
+    padding: 15px;
 }
 
 footer {
