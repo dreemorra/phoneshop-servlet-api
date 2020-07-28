@@ -15,13 +15,6 @@ public class Cart {
         return items;
     }
 
-    public CartItem getItem(long productId) {
-        Optional<CartItem> item = items.stream()
-                .filter(o -> o.getProduct().getId().equals(productId))
-                .findAny();
-        return item.orElse(null);
-    }
-
     @Override
     public String toString() {
         return "Cart[" +  items + ']';

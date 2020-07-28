@@ -9,6 +9,7 @@ import com.es.phoneshop.services.CartService;
 import com.es.phoneshop.model.product.Product;
 
 import javax.servlet.http.HttpServletRequest;
+import java.util.Optional;
 
 public class DefaultCartService implements CartService {
     private static final String CART_SESSION_ATTRIBUTE = DefaultCartService.class.getName() + ".cart";
@@ -38,11 +39,14 @@ public class DefaultCartService implements CartService {
     @Override
     public synchronized void add(Cart cart, Long productId, int quantity) throws OutOfStockException {
         Product product = productDao.getProduct(productId);
-        CartItem productInStock = cart.getItem(productId);
 
         if(product.getStock() < quantity) {
             throw new OutOfStockException(product, quantity, product.getStock());
         }
+
+        CartItem productInStock = cart.getItems().stream()
+                .filter(o -> o.getProduct().getId().equals(productId))
+                .findAny().orElse(null);
 
         //sums quantity if item is already in cart; otherwise adds item to cart
         if (productInStock != null) {

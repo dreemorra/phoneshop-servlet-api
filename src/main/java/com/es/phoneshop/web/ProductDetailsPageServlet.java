@@ -51,7 +51,9 @@ public class ProductDetailsPageServlet  extends HttpServlet {
             NumberFormat format = NumberFormat.getInstance(request.getLocale());
             quantity = format.parse(quantityString).intValue();
         } catch (ParseException e) {
-            e.printStackTrace();
+            request.setAttribute("error", "It is not a number");
+            doGet(request, response);
+            return;
         }
 
         Cart cart = cartService.getCart(request);

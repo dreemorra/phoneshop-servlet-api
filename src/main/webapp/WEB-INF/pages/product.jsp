@@ -12,7 +12,7 @@
           </div>
           <div class="product-description">
             <h1>${product.description}</h1>
-            <form method="post">
+            <form method="post" action="${pageContext.request.contextPath}/products/${product.id}">
                 <table>
                     <tr>
                         <td>Code</td>

@@ -41,9 +41,8 @@ public class DefaultRecentlyViewedProductsService implements RecentlyViewedProdu
     public void addProduct(HttpServletRequest req, Product product) {
         LinkedList<Product> productList = (LinkedList<Product>) getList(req);
         if (productList.contains(product)) {
-            return;
-        }
-        if (productList.size() >= listSize) {
+            productList.remove(product);
+        } else if (productList.size() >= listSize) {
             productList.removeLast();
         }
         productList.addFirst(product);
