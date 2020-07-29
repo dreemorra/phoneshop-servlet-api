@@ -4,6 +4,7 @@ import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.Currency;
 import java.util.List;
+import java.util.Objects;
 
 public class Product {
     private Long id;
@@ -105,5 +106,24 @@ public class Product {
 
     public void setImageUrl(String imageUrl) {
         this.imageUrl = imageUrl;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Product product = (Product) o;
+        return stock == product.stock &&
+                id.equals(product.id) &&
+                code.equals(product.code) &&
+                description.equals(product.description) &&
+                recentPrice.equals(product.recentPrice) &&
+                priceList.equals(product.priceList) &&
+                imageUrl.equals(product.imageUrl);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(id, code, description, recentPrice, priceList, stock, imageUrl);
     }
 }

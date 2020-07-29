@@ -106,7 +106,7 @@ img.product-tile {
     border-color: var(--primary-dark-color);
 }
 
-#search-button {
+.default-button {
     padding: 5px 5px;
     margin: 5px 5px;
     border: thin solid white;
@@ -118,7 +118,7 @@ img.product-tile {
     font-color: white;
 }
 
-#search-button:hover {
+.default-button:hover {
     background-color: var(--primary-dark-color);
 }
 
@@ -134,6 +134,7 @@ img.product-tile {
     padding: 5%;
     width: 90%;
     display: flex;
+    flex-direction: column;
 }
 
 .product img {
@@ -148,6 +149,42 @@ img.product-tile {
 .product-description table {
     margin: 10px 10px 10px 0px;
     background-color: var(--secondary-light-color);
+}
+
+.error-message {
+    color: red;
+    padding: 15px;
+}
+
+.success-message {
+    color: green;
+    padding: 15px;
+}
+
+.error-div {
+      height: 83.5vh;
+      width: 100%;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      text-align: center;
+}
+
+.viewed-items {
+  display: flex;
+  flex-direction: row;
+}
+
+.viewed-item {
+  margin: 15px;
+  width: 150px;
+  border: var(--secondary-color) solid 1px;
+  background: var(--secondary-color);
+  text-align: center;
+}
+
+.viewed-item img {
+  width: 100px;
 }
 
 footer {
