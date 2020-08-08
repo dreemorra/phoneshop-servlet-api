@@ -2,9 +2,10 @@ package com.es.phoneshop.model.cart;
 
 import com.es.phoneshop.exceptions.ProductNotFoundException;
 
+import java.io.Serializable;
 import java.util.*;
 
-public class Cart {
+public class Cart implements Serializable {
     private List<CartItem> items;
 
     public Cart() {
