@@ -39,21 +39,42 @@ public class DefaultCartService implements CartService {
     @Override
     public synchronized void add(Cart cart, Long productId, int quantity) throws OutOfStockException {
         Product product = productDao.getProduct(productId);
-
-        if(product.getStock() < quantity) {
-            throw new OutOfStockException(product, quantity, product.getStock());
-        }
-
-        CartItem productInStock = cart.getItems().stream()
-                .filter(o -> o.getProduct().getId().equals(productId))
-                .findAny().orElse(null);
+        Optional<CartItem> productInStock = findProduct(cart, productId, quantity);
 
         //sums quantity if item is already in cart; otherwise adds item to cart
-        if (productInStock != null) {
-            productInStock.setQuantity(productInStock.getQuantity() + quantity);
+        if (productInStock.isPresent()) {
+            productInStock.get().setQuantity(productInStock.get().getQuantity() + quantity);
         } else {
             cart.getItems().add(new CartItem(product, quantity));
         }
         product.setStock(product.getStock() - quantity);
+    }
+
+    @Override
+    public void update(Cart cart, Long productId, int newQuantity) throws OutOfStockException {
+        Product product = productDao.getProduct(productId);
+        Optional<CartItem> productInStock = findProduct(cart, productId, newQuantity);
+        if (productInStock.isPresent()) {
+            CartItem item = productInStock.get();
+            int oldStock = item.getProduct().getStock();
+
+            if (newQuantity - item.getQuantity() <= oldStock) {
+                item.getProduct().setStock(oldStock - newQuantity + item.getQuantity());
+                item.setQuantity(newQuantity);
+            }
+        } else {
+            cart.getItems().add(new CartItem(product, newQuantity));
+        }
+    }
+
+    private Optional<CartItem> findProduct(Cart cart, Long productId, int quantity) throws OutOfStockException {
+        Product product = productDao.getProduct(productId);
+
+        if(product.getStock() < quantity) {
+            throw new OutOfStockException(product, quantity, product.getStock());
+        }
+        return cart.getItems().stream()
+                .filter(o -> o.getProduct().getId().equals(productId))
+                .findAny();
     }
 }
