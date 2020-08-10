@@ -26,6 +26,7 @@
                 <td class="description">Description</td>
                 <td>Quantity</td>
                 <td class="price">Price</td>
+                <td></td>
               </tr>
             </thead>
             <c:forEach var="item" items="${cart.items}">
@@ -71,11 +72,15 @@
                     </span>
                   </div>
                 </td>
+                <td>
+                    <button form="deleteCartItem" formaction="${pageContext.request.contextPath}/cart/deleteCartItem/${item.product.id}">Delete</button>
+                </td>
               </tr>
             </c:forEach>
           </table>
           <button class="default-button">Update</button>
       </form>
+      <form id="deleteCartItem" method="post"></form>
   </div>
   <script src="${pageContext.servletContext.contextPath}/scripts/popupScript.js"></script>
 </tags:master>
