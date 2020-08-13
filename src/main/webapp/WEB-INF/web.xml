@@ -39,8 +39,8 @@
   </servlet>
 
   <servlet-mapping>
-    <servlet-name>deleteCartItem</servlet-name>
-    <url-pattern>/cart/deleteCartItem/*</url-pattern>
+    <servlet-name>cart</servlet-name>
+    <url-pattern>/cart</url-pattern>
   </servlet-mapping>
 
   <servlet>
@@ -49,8 +49,18 @@
   </servlet>
 
   <servlet-mapping>
-    <servlet-name>cart</servlet-name>
-    <url-pattern>/cart</url-pattern>
+    <servlet-name>deleteCartItem</servlet-name>
+    <url-pattern>/cart/deleteCartItem/*</url-pattern>
+  </servlet-mapping>
+
+  <servlet>
+    <servlet-name>minicart</servlet-name>
+    <servlet-class>com.es.phoneshop.web.MiniCartServlet</servlet-class>
+  </servlet>
+
+  <servlet-mapping>
+    <servlet-name>minicart</servlet-name>
+    <url-pattern>/minicart</url-pattern>
   </servlet-mapping>
 
   <error-page>

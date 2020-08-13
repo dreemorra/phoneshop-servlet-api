@@ -10,10 +10,11 @@
 </head>
 <body>
   <header>
-    <a href="${pageContext.servletContext.contextPath}">
+    <a href="${pageContext.servletContext.contextPath}" style="display:flex;">
       <img src="${pageContext.servletContext.contextPath}/images/logo.svg"/>
       PhoneShop
     </a>
+    <jsp:include page="/minicart"/>
   </header>
   <main>
       <div class="main-container">

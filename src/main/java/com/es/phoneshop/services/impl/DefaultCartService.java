@@ -9,7 +9,9 @@ import com.es.phoneshop.services.CartService;
 import com.es.phoneshop.model.product.Product;
 
 import javax.servlet.http.HttpServletRequest;
+import java.math.BigDecimal;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 public class DefaultCartService implements CartService {
     private static final String CART_SESSION_ATTRIBUTE = DefaultCartService.class.getName() + ".cart";
@@ -48,6 +50,7 @@ public class DefaultCartService implements CartService {
             cart.getItems().add(new CartItem(product, quantity));
         }
         product.setStock(product.getStock() - quantity);
+        recalculateCart(cart);
     }
 
     @Override
@@ -65,6 +68,7 @@ public class DefaultCartService implements CartService {
         } else {
             cart.getItems().add(new CartItem(product, newQuantity));
         }
+        recalculateCart(cart);
     }
 
     @Override
@@ -72,6 +76,7 @@ public class DefaultCartService implements CartService {
         CartItem product = findProduct(cart, productId).get();
         product.getProduct().setStock(product.getProduct().getStock() + product.getQuantity());
         cart.getItems().remove(product);
+        recalculateCart(cart);
     }
 
     private Optional<CartItem> checkAndFindProduct(Cart cart, Long productId, int quantity) throws OutOfStockException {
@@ -82,6 +87,22 @@ public class DefaultCartService implements CartService {
         }
         return findProduct(cart, productId);
     }
+
+    private void recalculateCart(Cart cart) {
+        BigDecimal totalCost = cart.getItems().stream()
+                .reduce(new BigDecimal(0),
+                        (sum, item) -> sum
+                                .add(item.getProduct().getPrice().multiply(new BigDecimal(item.getQuantity()))),
+                        BigDecimal::add);
+        int totalQuantity = cart.getItems().stream()
+                .reduce(0,
+                        (sum, item) -> sum += item.getQuantity(),
+                        Integer::sum);
+        cart.setTotalCost(totalCost);
+        cart.setTotalQuantity(totalQuantity);
+    }
+
+
 
     private Optional<CartItem> findProduct(Cart cart, Long productId) {
         return cart.getItems().stream()
