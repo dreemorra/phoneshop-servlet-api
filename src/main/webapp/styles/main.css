@@ -63,8 +63,8 @@ body {
 }
 
 .minicart {
-   font-size: 0.8em;
-   margin: 10px;
+   font-size: 0.5em;
+   margin: 5px;
 }
 
 /* Table */
@@ -80,7 +80,7 @@ thead {
 
 td {
   padding: 10px;
-  width: 25%;
+  width: 20%;
   text-align: center
 }
 

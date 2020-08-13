@@ -19,11 +19,13 @@
                 <tags:sortLink sort="DESCRIPTION" order="ASC" query="${param.query}"/>
                 <tags:sortLink sort="DESCRIPTION" order="DESC" query="${param.query}"/>
             </td>
+            <td>Quantity</td>
             <td class="price">
                 Price
                 <tags:sortLink sort="PRICE" order="ASC" query="${param.query}"/>
                 <tags:sortLink sort="PRICE" order="DESC" query="${param.query}"/>
             </td>
+            <td></td>
           </tr>
         </thead>
         <c:forEach var="product" items="${products}">
@@ -35,6 +37,9 @@
                 <a href="${pageContext.servletContext.contextPath}/products/${product.id}">
                     ${product.description}
                 </a>
+            </td>
+            <td>
+                <input name="quantity" type="number" value="${not empty param.quantity ? param.quantity : 1}" min="1" max="${product.stock}" style="width: 20%;">
             </td>
             <td class="price">
               <div class="popup">
@@ -60,10 +65,25 @@
                 </span>
               </div>
             </td>
+            <td>
+                <button class="default-button" formaction="${pageContext.request.contextPath}/products/${product.id}?quantity=1&returnMainPage=true"
+                        form="addToCartForm">Add to cart</button>
+                <c:if test="${param.id == product.id}">
+                    <c:choose>
+                        <c:when test="${not empty param.error}">
+                            <p class="error">${param.error}</p>
+                        </c:when>
+                        <c:otherwise>
+                            <p class="success">${param.message}</p>
+                        </c:otherwise>
+                    </c:choose>
+                </c:if>
+            </td>
           </tr>
         </c:forEach>
       </table>
       <jsp:include page="recentlyViewed.jsp" />
   </div>
+  <form id="addToCartForm" method="post"></form>
   <script src="${pageContext.servletContext.contextPath}/scripts/popupScript.js"></script>
 </tags:master>
