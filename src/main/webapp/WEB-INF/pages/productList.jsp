@@ -39,7 +39,7 @@
                 </a>
             </td>
             <td>
-                <input name="quantity" type="number" value="${not empty param.quantity ? param.quantity : 1}" min="1" max="${product.stock}" style="width: 20%;">
+                <input name="quantity" type="number" value="${not empty param.quantity ? param.quantity : 1}" min="1" max="${product.stock}" style="width: 20%;" id="input-${product.id}">
             </td>
             <td class="price">
               <div class="popup">
@@ -66,8 +66,10 @@
               </div>
             </td>
             <td>
-                <button class="default-button" formaction="${pageContext.request.contextPath}/products/${product.id}?quantity=1&returnMainPage=true"
-                        form="addToCartForm">Add to cart</button>
+                <button id="button-${product.id}"
+                            formaction="${pageContext.request.contextPath}/products/${product.id}?returnMainPage=true&quantity=1"
+                            form="addToCartForm">Add to cart
+                </button>
                 <c:if test="${param.id == product.id}">
                     <c:choose>
                         <c:when test="${not empty param.error}">
@@ -86,4 +88,5 @@
   </div>
   <form id="addToCartForm" method="post"></form>
   <script src="${pageContext.servletContext.contextPath}/scripts/popupScript.js"></script>
+  <script src="${pageContext.servletContext.contextPath}/scripts/postQuantity.js"></script>
 </tags:master>

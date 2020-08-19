@@ -1,7 +1,5 @@
 package com.es.phoneshop.model.cart;
 
-import com.es.phoneshop.exceptions.ProductNotFoundException;
-
 import java.io.Serializable;
 import java.math.BigDecimal;
 import java.util.*;

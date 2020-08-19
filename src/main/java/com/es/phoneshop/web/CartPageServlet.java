@@ -58,8 +58,7 @@ public class CartPageServlet extends HttpServlet {
             request.setAttribute("errors", errors);
             doGet(request, response);
         } else {
-            response.sendRedirect(request.getContextPath() + "/cart"
-                    + "?message=Cart updated successfully!");
+            response.sendRedirect(String.format(request.getContextPath() + "/cart" + "?message=%s", "Cart updated successfully!"));
         }
     }
 }

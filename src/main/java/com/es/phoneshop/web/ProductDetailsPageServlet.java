@@ -74,9 +74,9 @@ public class ProductDetailsPageServlet  extends HttpServlet {
         request.setAttribute("message", "Product added to cart");
 
         if (isReturnMainPage) {
-            response.sendRedirect(request.getContextPath() + "/products" + "?message=Product added to cart");
+            response.sendRedirect(String.format(request.getContextPath() + "/products" + "?message=%s", "Product added to cart"));
         } else {
-            response.sendRedirect(request.getContextPath() + "/products/" + productId + "?message=Product added to cart");
+            response.sendRedirect(String.format(request.getContextPath() + "/products/%d" + "?message=%s", productId, "Product added to cart"));
         }
     }
 

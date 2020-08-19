@@ -5,6 +5,7 @@
 
 <jsp:useBean id="cart" type="com.es.phoneshop.model.cart.Cart" scope="request"/>
 <tags:master pageTitle="Cart">
+
   <form class="search-form">
     <input id="search-input" name="query" type="text" value="${param.query}" placeholder="Search">
     <input id="search-button" class="default-button" type="submit" value="Search">
@@ -42,7 +43,7 @@
                 <td>
                     <input name="quantity" type="number" value="${not empty paramValues["quantity"][item.product.id]
                                                                                         ? paramValues["quantity"][item.product.id]
-                                                                                        : item.quantity}" min="1" max="${item.product.stock}" style="width: 20%;">
+                                                                                        : item.quantity}" min="1" max="${item.product.stock + item.quantity}" style="width: 20%;">
                     <input type="hidden" value="${item.product.id}" name="productId" >
                     <c:if test="${not empty errors[item.product.id.longValue()]}">
                         <p class="error">${errors[item.product.id.longValue()]}</p>

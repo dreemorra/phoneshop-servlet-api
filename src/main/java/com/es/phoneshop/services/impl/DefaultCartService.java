@@ -11,7 +11,6 @@ import com.es.phoneshop.model.product.Product;
 import javax.servlet.http.HttpServletRequest;
 import java.math.BigDecimal;
 import java.util.Optional;
-import java.util.stream.Collectors;
 
 public class DefaultCartService implements CartService {
     private static final String CART_SESSION_ATTRIBUTE = DefaultCartService.class.getName() + ".cart";
@@ -56,7 +55,7 @@ public class DefaultCartService implements CartService {
     @Override
     public void update(Cart cart, Long productId, int newQuantity) throws OutOfStockException {
         Product product = productDao.getProduct(productId);
-        Optional<CartItem> productInStock = checkAndFindProduct(cart, productId, newQuantity);
+        Optional<CartItem> productInStock = findProduct(cart, productId);
         if (productInStock.isPresent()) {
             CartItem item = productInStock.get();
             int oldStock = item.getProduct().getStock();
@@ -90,14 +89,10 @@ public class DefaultCartService implements CartService {
 
     private void recalculateCart(Cart cart) {
         BigDecimal totalCost = cart.getItems().stream()
-                .reduce(new BigDecimal(0),
-                        (sum, item) -> sum
-                                .add(item.getProduct().getPrice().multiply(new BigDecimal(item.getQuantity()))),
-                        BigDecimal::add);
-        int totalQuantity = cart.getItems().stream()
-                .reduce(0,
-                        (sum, item) -> sum += item.getQuantity(),
-                        Integer::sum);
+                .map(item -> item.getProduct().getPrice().multiply(new BigDecimal(item.getQuantity())))
+                .reduce(BigDecimal.ZERO, BigDecimal::add);
+        int totalQuantity = cart.getItems().stream().mapToInt(CartItem::getQuantity).sum();
+
         cart.setTotalCost(totalCost);
         cart.setTotalQuantity(totalQuantity);
     }
