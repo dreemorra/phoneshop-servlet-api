@@ -4,7 +4,7 @@
 <%@ taglib prefix="tags" tagdir="/WEB-INF/tags" %>
 
 <tags:master pageTitle="Product not found">
-    <div class="error-div">
+    <div class="info-div">
         <h1>${pageContext.errorData.statusCode}. That’s an error.</h1>
     </div>
 </tags:master>
