@@ -46,6 +46,9 @@ public class ProductDetailsPageServlet  extends HttpServlet {
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         Long productId = parseProductId(request);
         String quantityString = request.getParameter("quantity");
+        String returnMainPage = request.getParameter("returnMainPage");
+        boolean isReturnMainPage = returnMainPage != null && returnMainPage.equals("true");
+
         int quantity = 0;
         try {
             NumberFormat format = NumberFormat.getInstance(request.getLocale());
@@ -61,12 +64,20 @@ public class ProductDetailsPageServlet  extends HttpServlet {
             cartService.add(cart, productId, quantity);
         } catch (OutOfStockException e) {
             request.setAttribute("error", "Out of stock, available " + e.getStockAvailable());
-            doGet(request, response);
-            return;
+            if (isReturnMainPage) {
+                response.sendRedirect(request.getContextPath() + "/products"
+                        + "Out of stock, available " + e.getStockAvailable());
+            } else {
+                doGet(request, response);
+            }
         }
         request.setAttribute("message", "Product added to cart");
 
-        response.sendRedirect(request.getContextPath() + "/products/" + productId + "?message=Product added to cart");
+        if (isReturnMainPage) {
+            response.sendRedirect(String.format(request.getContextPath() + "/products" + "?message=%s", "Product added to cart"));
+        } else {
+            response.sendRedirect(String.format(request.getContextPath() + "/products/%d" + "?message=%s", productId, "Product added to cart"));
+        }
     }
 
     private Long parseProductId(HttpServletRequest request) {

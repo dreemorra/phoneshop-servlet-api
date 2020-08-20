@@ -2,9 +2,7 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
 <%@ taglib prefix="tags" tagdir="/WEB-INF/tags" %>
-
-<tags:master pageTitle="Product not found">
-    <div class="info-div">
-        <h1>${pageContext.errorData.statusCode}. That’s an error.</h1>
-    </div>
-</tags:master>
+<a href="${pageContext.request.contextPath}/cart" class="minicart">
+    <p>Cart: ${totalQuantity} items </p>
+    <p>Cost: ${totalCost}$ </p>
+</a>

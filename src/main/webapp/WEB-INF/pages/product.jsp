@@ -4,7 +4,6 @@
 <%@ taglib prefix="tags" tagdir="/WEB-INF/tags" %>
 
 <tags:master pageTitle="Product Details">
-  <p style="margin: 20px 0px 10px 20px;">Cart: ${cart}</p>
   <div class="product">
       <div style="display: flex;">
           <div>

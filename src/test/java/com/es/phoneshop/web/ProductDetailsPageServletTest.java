@@ -2,7 +2,6 @@ package com.es.phoneshop.web;
 
 import com.es.phoneshop.dao.ProductDao;
 import com.es.phoneshop.dao.impl.ArrayListProductDao;
-import com.es.phoneshop.exceptions.OutOfStockException;
 import com.es.phoneshop.model.product.Product;
 import com.es.phoneshop.model.product.ProductDemoData;
 import org.junit.Before;
@@ -39,11 +38,11 @@ public class ProductDetailsPageServletTest {
     private HttpSession httpSession;
 
     private ProductDao productDao;
-    private ProductDetailsPageServlet servlet;
+    private CartPageServlet servlet;
 
     @Before
     public void setup() throws Exception {
-        servlet = new ProductDetailsPageServlet();
+        servlet = new CartPageServlet();
         servlet.init(config);
         Mockito.when(request.getSession()).thenReturn(httpSession);
         Mockito.when(httpSession.getAttribute(Mockito.anyString())).thenReturn(null);
