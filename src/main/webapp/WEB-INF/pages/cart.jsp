@@ -7,11 +7,6 @@
 <tags:master pageTitle="Cart">
   <c:choose>
     <c:when test="${not empty cart.items}">
-      <form class="search-form">
-        <input id="search-input" name="query" type="text" value="${param.query}" placeholder="Search">
-        <input id="search-button" class="default-button" type="submit" value="Search">
-      </form>
-
       <div class="product-list">
           <c:choose>
               <c:when test="${not empty error}">
@@ -82,6 +77,9 @@
                 </c:forEach>
               </table>
               <button class="default-button">Update</button>
+          </form>
+          <form action="${pageContext.request.contextPath}/checkout">
+                <button class="default-button">Checkout</button>
           </form>
           <form id="deleteCartItem" method="post"></form>
       </div>

@@ -9,6 +9,7 @@ public class Cart implements Serializable {
 
     private int totalQuantity;
     private BigDecimal totalCost;
+    private Currency currency;
 
     public Cart() {
         this.items = new ArrayList<>();
@@ -37,5 +38,17 @@ public class Cart implements Serializable {
 
     public void setTotalCost(BigDecimal totalCost) {
         this.totalCost = totalCost;
+    }
+
+    public void setItems(List<CartItem> items) {
+        this.items = items;
+    }
+
+    public Currency getCurrency() {
+        return currency;
+    }
+
+    public void setCurrency(Currency currency) {
+        this.currency = currency;
     }
 }
