@@ -78,6 +78,13 @@ public class DefaultCartService implements CartService {
         recalculateCart(cart);
     }
 
+    @Override
+    public void clear(HttpServletRequest request) {
+        Cart cart = getCart(request);
+        cart.getItems().clear();
+        recalculateCart(cart);
+    }
+
     private Optional<CartItem> checkAndFindProduct(Cart cart, Long productId, int quantity) throws OutOfStockException {
         Product product = productDao.getProduct(productId);
 

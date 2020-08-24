@@ -31,6 +31,14 @@ public class ArrayListOrderDao implements OrderDao {
         return orderList.stream()
                 .filter(order -> id.equals(order.getId()))
                 .findAny()
+                .orElseThrow(() -> new OrderNotFoundException(id.toString()));
+    }
+
+    @Override
+    public synchronized Order getOrderBySecureId(String id) throws OrderNotFoundException {
+        return orderList.stream()
+                .filter(order -> id.equals(order.getSecureId()))
+                .findAny()
                 .orElseThrow(() -> new OrderNotFoundException(id));
     }
 

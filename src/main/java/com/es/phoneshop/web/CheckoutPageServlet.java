@@ -1,7 +1,5 @@
 package com.es.phoneshop.web;
 
-import com.es.phoneshop.dao.ProductDao;
-import com.es.phoneshop.dao.impl.ArrayListProductDao;
 import com.es.phoneshop.enums.PaymentMethod;
 import com.es.phoneshop.model.cart.Cart;
 import com.es.phoneshop.model.order.Order;
@@ -23,14 +21,12 @@ import java.util.Map;
 import java.util.function.Consumer;
 
 public class CheckoutPageServlet extends HttpServlet {
-    private ProductDao productDao;
     private CartService cartService;
     private OrderService orderService;
 
     @Override
     public void init(ServletConfig config) throws ServletException {
         super.init(config);
-        productDao = ArrayListProductDao.getInstance();
         cartService = DefaultCartService.getInstance();
         orderService = DefaultOrderService.getInstance();
     }
@@ -64,7 +60,8 @@ public class CheckoutPageServlet extends HttpServlet {
             doGet(request, response);
         } else {
             orderService.placeOrder(order);
-            response.sendRedirect(String.format(request.getContextPath() + "/overview/%d" , order.getId()));
+            cartService.clear(request);
+            response.sendRedirect(String.format(request.getContextPath() + "/order/overview/%s" , order.getSecureId()));
         }
     }
 
