@@ -66,37 +66,39 @@ public class CheckoutPageServlet extends HttpServlet {
     }
 
     private void setDeliveryDate (HttpServletRequest request, Map<String, String> errors, Order order) {
-        String parameter = "deliveryDate";
-        String value = request.getParameter(parameter);
-        if (value == null || value.isEmpty()) {
-            errors.put(parameter, "Value is required");
-        } else {
+        String value = getParameterValue(request, "deliveryDate", errors);
+        if (value != null) {
             try {
                 LocalDate localDate = LocalDate.parse(value);
                 order.setDeliveryDate(localDate);
             } catch (DateTimeParseException e) {
-                errors.put(parameter, "Date format is not correct. Format example: 27-12-1999");
+                errors.put("deliveryDate", "Date format is not correct. Format example: 27-12-1999");
             }
         }
     }
 
     private void setRequiredValue(HttpServletRequest request, String parameter, Map<String, String> errors, Consumer<String> consumer) {
-        String value = request.getParameter(parameter);
-        if(value == null || value.isEmpty()) {
-            errors.put(parameter, "Value is required");
-        } else {
+        String value = getParameterValue(request, parameter, errors);
+        if (value != null) {
             consumer.accept(value);
         }
     }
 
     private void setPaymentMethod (HttpServletRequest request, Map<String, String> errors, Order order) {
-        String parameter = "paymentMethod";
+        String value = getParameterValue(request, "paymentMethod", errors);
+        if (value != null) {
+            PaymentMethod paymentMethod = PaymentMethod.valueOf(value);
+            order.setPaymentMethod(paymentMethod);
+        }
+    }
+
+    private String getParameterValue(HttpServletRequest request, String parameter, Map<String, String> errors) {
         String value = request.getParameter(parameter);
         if (value == null || value.isEmpty()) {
             errors.put(parameter, "Value is required");
+            return null;
         } else {
-            PaymentMethod paymentMethod = PaymentMethod.valueOf(value);
-            order.setPaymentMethod(paymentMethod);
+            return value;
         }
     }
 }

@@ -33,7 +33,7 @@ public class DefaultOrderService implements OrderService {
             try {
                 return (CartItem) item.clone();
             } catch (CloneNotSupportedException e) {
-                throw new RuntimeException(e);
+                throw new RuntimeException("Error: cloning of CartItem not supported", e);
             }
         }).collect(Collectors.toList()));
         order.setSubtotal(cart.getTotalCost());

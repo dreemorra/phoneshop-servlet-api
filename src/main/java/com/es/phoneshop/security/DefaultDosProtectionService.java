@@ -34,34 +34,34 @@ public class DefaultDosProtectionService implements DosProtectionService {
                 return true;
             }
 
-            user.setDate(new Date());
+            user.setLastAccessDate(new Date());
             return false;
-            
+
         } else {
             long diff = calculateTime(user);
             if (diff < maxTime) {
                 //ban
-                if (user.getCount() > maxCount) {
+                if (user.getAccessCount() > maxCount) {
                     return false;
                 }
             } else {
                 unbanUser(user);
             }
 
-            user.setCount(user.getCount()+1);
+            user.setAccessCount(user.getAccessCount()+1);
         }
         countMap.put(ip, user);
         return true;
     }
 
     private long calculateTime(DosUser user) {
-        long milliseconds = new Date().getTime() - user.getDate().getTime();
+        long milliseconds = new Date().getTime() - user.getLastAccessDate().getTime();
         long seconds = TimeUnit.MILLISECONDS.toSeconds(milliseconds);
         return seconds;
     }
 
     private void unbanUser(DosUser user) {
-        user.setCount(1L);
-        user.setDate(new Date());
+        user.setAccessCount(1L);
+        user.setLastAccessDate(new Date());
     }
 }

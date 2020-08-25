@@ -4,12 +4,12 @@ import java.util.Date;
 
 public class DosUser {
     private boolean isBanned;
-    private Date date;
-    private long count;
+    private Date lastAccessDate;
+    private long accessCount;
 
-    public DosUser(Date date, long count) {
-        this.date = date;
-        this.count = count;
+    public DosUser(Date lastAccessDate, long accessCount) {
+        this.lastAccessDate = lastAccessDate;
+        this.accessCount = accessCount;
         this.isBanned = false;
     }
 
@@ -21,19 +21,19 @@ public class DosUser {
         isBanned = banned;
     }
 
-    public Date getDate() {
-        return date;
+    public Date getLastAccessDate() {
+        return lastAccessDate;
     }
 
-    public void setDate(Date date) {
-        this.date = date;
+    public void setLastAccessDate(Date lastAccessDate) {
+        this.lastAccessDate = lastAccessDate;
     }
 
-    public long getCount() {
-        return count;
+    public long getAccessCount() {
+        return accessCount;
     }
 
-    public void setCount(long count) {
-        this.count = count;
+    public void setAccessCount(long accessCount) {
+        this.accessCount = accessCount;
     }
 }
