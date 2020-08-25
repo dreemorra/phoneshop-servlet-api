@@ -100,7 +100,7 @@ img.product-tile {
 /* Search */
 .search-form {
     display: flex;
-    padding: 2%;
+    padding: 2% 5%;
 }
 
 #search-input {
@@ -134,7 +134,7 @@ img.product-tile {
 .product-list {
     display: flex;
     flex-direction: column;
-    padding: 0 2% 2% 2%;
+    margin: 5%;
 }
 
 /*Product details*/
