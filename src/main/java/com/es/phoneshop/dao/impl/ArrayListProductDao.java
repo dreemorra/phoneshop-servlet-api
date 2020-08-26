@@ -1,11 +1,13 @@
 package com.es.phoneshop.dao.impl;
 
 import com.es.phoneshop.dao.ProductDao;
+import com.es.phoneshop.enums.SearchFields;
 import com.es.phoneshop.model.product.Product;
 import com.es.phoneshop.enums.SortField;
 import com.es.phoneshop.enums.SortOrder;
 import com.es.phoneshop.exceptions.ProductNotFoundException;
 
+import java.math.BigDecimal;
 import java.util.*;
 import java.util.stream.Collectors;
 
@@ -60,6 +62,39 @@ public class ArrayListProductDao implements ProductDao {
     }
 
     @Override
+    public synchronized List<Product> findAdvancedProducts(Map<SearchFields, String> fields, SortField sortField, SortOrder sortOrder) {
+        String query = getValueOrDefault(fields.get(SearchFields.PRODUCT_CODE), "");
+        String minPriceString = getValueOrDefault(fields.get(SearchFields.MIN_PRICE), "");
+        String maxPriceString = getValueOrDefault(fields.get(SearchFields.MAX_PRICE), "");
+        String minStockString = getValueOrDefault(fields.get(SearchFields.MIN_STOCK), "");
+
+        long minPrice = 0;
+        long maxPrice = Long.MAX_VALUE;
+        int minStock = 0;
+        
+        if (!minPriceString.equals("")) {
+            minPrice = Long.parseLong(minPriceString);
+        } else minPrice = 0;
+        if (!maxPriceString.equals("")) {
+            maxPrice = Long.parseLong(maxPriceString);
+        }
+        if (!minStockString.equals("")) {
+            minStock = Integer.parseInt(minStockString);
+        }
+
+        long finalMinPrice = minPrice;
+        long finalMaxPrice = maxPrice;
+        int finalMinStock = minStock;
+
+        return products.stream()
+                .filter(product -> product.getCode().contains(query))
+                .filter(product -> product.getPrice().compareTo(BigDecimal.valueOf(finalMinPrice)) > 0 && product.getPrice().compareTo(BigDecimal.valueOf(finalMaxPrice)) < 0)
+                .filter(product -> product.getStock() > finalMinStock)
+                .collect(Collectors.toList());
+    }
+
+
+    @Override
     public List<Product> search(String query) {
         String[] split = query.toLowerCase().split(" ");
         //TODO: make it better if possible
@@ -111,5 +146,9 @@ public class ArrayListProductDao implements ProductDao {
         newProduct.setPriceList(oldProduct.getPriceList());
         newProduct.setStock(oldProduct.getStock());
         newProduct.setImageUrl(oldProduct.getImageUrl());
+    }
+
+    private static <T> T getValueOrDefault(T value, T defaultValue) {
+        return value == null ? defaultValue : value;
     }
 }

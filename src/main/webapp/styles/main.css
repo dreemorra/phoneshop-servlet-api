@@ -114,6 +114,12 @@ img.product-tile {
     border-color: var(--primary-dark-color);
 }
 
+.advancedSearch {
+    display: flex;
+    flex-direction: column;
+    width: 50%;
+}
+
 .default-button {
     padding: 5px 5px;
     margin: 5px 5px;
