@@ -4,14 +4,30 @@
 <%@ taglib prefix="tags" tagdir="/WEB-INF/tags" %>
 
 <jsp:useBean id="products" type="java.util.ArrayList" scope="request"/>
-<tags:master pageTitle="Product List">
-  <div class="search-form">
-      <form>
-        <input id="search-input" name="query" type="text" value="${param.query}" placeholder="Search">
+<tags:master pageTitle="Advanced Search">
+  <form class="search-form">
+      <div class="advancedSearch" style="width: 50%;">
+        <table>
+            <tr>
+                <td>Product code</td>
+                <td><input name="productCode" type="text" value="${param.productCode}">
+            </tr>
+            <tr>
+                <td>Min price</td>
+                <td><input name="minPrice" type="number" value="${param.minPrice}" min="0">
+            </tr>
+            <tr>
+                <td>Max price</td>
+                <td><input name="maxPrice" type="number" value="${param.maxPrice}" min="0">
+            </tr>
+            <tr>
+                <td>Min stock</td>
+                <td><input name="minStock" type="number" value="${param.minStock}" min="0">
+            </tr>
+        </table>
         <input id="search-button" class="default-button" type="submit" value="Search">
-      </form>
-      <a class="default-button" href="${pageContext.request.contextPath}/products/advancedSearch">Advanced</a>
-  </div>
+      </div>
+  </form>
   <div class="product-list">
       <table>
         <thead>
@@ -87,7 +103,6 @@
           </tr>
         </c:forEach>
       </table>
-      <jsp:include page="recentlyViewed.jsp" />
   </div>
   <form id="addToCartForm" method="post"></form>
   <script src="${pageContext.servletContext.contextPath}/scripts/popupScript.js"></script>
